@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Ebola Timeline Map</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="css/site.css"/>
+        <script src="js/jquery.js"></script>
+        <script src="js/d3.js"></script>
+        <script src="data/totalCasesAndDeaths.js"></script>  
+    </head>
+    <body>
+        <div class="container">
+            <div class="row">
+                <h3>The Spread of Ebola</h3>                
+            </div>
+            <div class="row">
+                <div class="col-lg-3">
+                    <p>Much of this information has been collated from various news articles, so the accuracy should be taken with a slight pinch of salt.  For feedback on data improvements try <a>github</a> or tweet me <a>@simon_b_johnson</a>. 
+                </div>
+                <div id="bar_chart" class="col-lg-9"></div>
+            </div>
+            <div class="row">
+                <div id="map" class="col-md-12"></div>
+            </div>
+        </div>
+        <script src="js/site.js"></script>
+    </body>
+</html>

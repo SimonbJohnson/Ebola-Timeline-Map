@@ -1,0 +1,38 @@
+#map{
+    width:100%;
+    height:400px;
+}
+
+#bar_chart{
+    height:150px;
+}
+
+.totalbar {
+  fill: steelblue;
+}
+
+.deathbar {
+  fill: red;
+}
+
+.axis {
+  font: 9px sans-serif;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.grid path,
+.grid line{
+  fill: none;
+  stroke: #ddd;
+  shape-rendering: crispEdges;
+}
+
+.x.axis path {
+  display: none;
+}
