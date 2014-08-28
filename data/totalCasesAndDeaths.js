@@ -18,4 +18,6 @@ var totalCasesAndDeaths = [{"Date":"31/03/2014","newCases":44,"newDeaths":23},
 {"Date":"28/07/2014","newCases":233,"newDeaths":97},
 {"Date":"04/08/2014","newCases":349,"newDeaths":171},
 {"Date":"11/08/2014","newCases":264,"newDeaths":137},
-{"Date":"18/08/2014","newCases":498,"newDeaths":281}];
+{"Date":"18/08/2014","newCases":498,"newDeaths":281},
+{"Date":"25/08/2014","newCases":426,"newDeaths":155}
+];

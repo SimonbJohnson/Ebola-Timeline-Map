@@ -88,10 +88,86 @@ function generateBarChart(id,data){
         .attr("opacity",0)
         .attr("id",function(d,i){return "barSelect"+i;})
         .on("click",function(d,i){
-            d3.select("#barSelect"+currentWeek).transition().duration(200).attr("opacity",0);
+            d3.select("#barSelect"+currentWeek).attr("opacity",0);
             currentWeek=i;
-            d3.select("#barSelect"+currentWeek).transition().duration(200).attr("opacity",0.15);
+            d3.select("#barSelect"+currentWeek).attr("opacity",0.15);
+            transitionMap();
         });
+}
+
+function generateMap(){
+    var margin = {top: 10, right: 10, bottom: 10, left: 10},
+    width = $('#map').width() - margin.left - margin.right,
+    height = 425;
+   
+    var projection = d3.geo.mercator()
+        .center([-5,7.7])
+        .scale(1500);
+
+    var svg = d3.select('#map').append("svg")
+        .attr("width", width)
+        .attr("height", height);
+
+    var path = d3.geo.path()
+        .projection(projection);
+
+    var g = svg.append("g");
+    
+    g.selectAll("path")
+        .data(westafrica.features)
+        .enter()
+        .append("path")
+        .attr("d", path)
+        .attr("stroke",'#aaaaaa')
+        .attr("fill",'#ffffff')
+        .attr("class","country");
+
+    var g = svg.append("g");    
+
+    g.selectAll("path")
+        .data(regions.features)
+        .enter()
+        .append("path")
+        .attr("d", path)
+        .attr("stroke",'#aaaaaa')
+        .attr("fill",'#ff0000')
+        .attr("opacity",0)
+        .attr("id",function(d){return d.properties.NAME_REF;})
+        .attr("class","region");
+
+}
+
+function transitionMap(){
+    
+    
+    var projection = d3.geo.mercator()
+        .center([mapSettings[currentWeek].lng,mapSettings[currentWeek].lat])
+        .scale(mapSettings[currentWeek].scale);
+
+    var path = d3.geo.path()
+        .projection(projection);
+
+    d3.selectAll('.country').transition()
+            .attr('d', path);
+            
+    
+    var data = regionDeaths[currentWeek].Deaths;
+    data.forEach(function(element){
+               d3.select("#"+element.Region.split(' ').join('_'))
+                        .transition()
+                        .attr("opacity",convertDeathsToOpacity(element.Deaths))
+                        .attr('d', path); 
+            });
+            
+            
+
+}
+
+function convertDeathsToOpacity(deaths){
+    var opacity = deaths/90*0.7;
+    if(opacity>0){opacity=opacity+0.2;}
+    console.log(opacity);
+    return opacity;
 }
 
 function formatDate(date){
@@ -102,3 +178,30 @@ function formatDate(date){
 var currentWeek=0;
 generateBarChart('#bar_chart',totalCasesAndDeaths);
 d3.select("#barSelect"+currentWeek).attr("opacity",0.15);
+generateMap();
+transitionMap();
+
+$(document).keydown(function(e) {
+    switch(e.which) {
+        case 37:
+            d3.select("#barSelect"+currentWeek).attr("opacity",0);    
+            currentWeek=currentWeek-1;
+            if(currentWeek<0){currentWeek=0;}
+            d3.select("#barSelect"+currentWeek).attr("opacity",0.15);
+            transitionMap();
+            break;
+
+        case 39:
+            d3.select("#barSelect"+currentWeek).attr("opacity",0);    
+            currentWeek=currentWeek+1;
+            if(currentWeek>totalCasesAndDeaths.length-1){
+                currentWeek=totalCasesAndDeaths.length-1;
+            }
+            d3.select("#barSelect"+currentWeek).attr("opacity",0.15); 
+            transitionMap();
+            break;
+
+        default: return; // exit this handler for other keys
+    }
+    e.preventDefault(); // prevent the default action (scroll / move caret)
+});
