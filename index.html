@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Ebola Timeline Map</title>
+        <title>Week by Week Ebola Map</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="css/bootstrap.min.css">
@@ -13,22 +13,29 @@
         <script src="data/regions.js"></script>
         <script src="data/region_deaths.js"></script>
         <script src="data/map_settings.js"></script>
+        <script src="data/blockades_geo.js"></script>
+        <script src="data/blockades.js"></script>
+        <script src="data/medical_centres_geo.js"></script>
+        <script src="data/medical_centres.js"></script>
     </head>
     <body>
         <div class="container">
             <div class="row">
-                <h3>The Spread of Ebola</h3>                
+                <h3>Week by Week Spread of Ebola</h3>                
             </div>
             <div class="row">
                 <div class="col-lg-3">
-                    <p>Much of this information has been collated from various news articles, so the accuracy should be taken with a slight pinch of salt.  For feedback on data improvements try <a>github</a> or tweet me <a>@simon_b_johnson</a>. 
+                    <p>Much of this information has been collated from various <a href="sources.html">news articles and sources</a>.  The accuracy should be taken with a slight pinch of salt.  For feedback on data improvements try <a>github</a> or tweet me <a>@simon_b_johnson</a>. 
                 </div>
                 <div id="bar_chart" class="col-lg-9"></div>
             </div>
             <div class="row">
+                <div id="week" class="col-md-12"></div>
+            </div>            
+            <div class="row">
                 <div id="map" class="col-md-12"></div>
             </div>
-        </div>
+        </div> 
         <script src="js/site.js"></script>
     </body>
 </html>

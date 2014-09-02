@@ -36,3 +36,11 @@
 .x.axis path {
   display: none;
 }
+
+.container{
+    min-width:912px;
+}
+
+.maplabel{
+    fill: #666666;
+}

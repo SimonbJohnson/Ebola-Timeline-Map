@@ -1,6 +1,6 @@
 function generateBarChart(id,data){
 
-    var margin = {top: 0, right: 30, bottom: 30, left: 30},
+    var margin = {top: 0, right: 80, bottom: 30, left: 30},
         width = $(id).width() - margin.left - margin.right,
         height =  $(id).height() - margin.top - margin.bottom;
 
@@ -38,7 +38,7 @@ function generateBarChart(id,data){
         .append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
     
-    var max = d3.max(data, function(d) { return d.newCases+d.newDeaths; })
+    var max = d3.max(data, function(d) { return d.newCases; });
     
     x.domain(data.map(function(d) { return formatDate(d.Date); }));
     y.domain([0, max]);
@@ -61,17 +61,17 @@ function generateBarChart(id,data){
     .enter().append("rect")
         .attr("class", "totalbar")
         .attr("x", function(d) { return x(formatDate(d.Date)); })
-        .attr("width", x.rangeBand())
-        .attr("y", function(d) { return y(d.newCases+d.newDeaths); })
+        .attr("width", x.rangeBand()/2)
+        .attr("y", function(d) { return y(d.newCases); })
         .attr("height", function(d) {
-           return height - y(d.newCases+d.newDeaths);});
+           return height - y(d.newCases);});
            
     svg.selectAll(".deathbar")
         .data(data)
     .enter().append("rect")
         .attr("class", "deathbar")
-        .attr("x", function(d) { return x(formatDate(d.Date)); })
-        .attr("width", x.rangeBand())
+        .attr("x", function(d) { return x(formatDate(d.Date))+x.rangeBand()/2; })
+        .attr("width", x.rangeBand()/2)
         .attr("y", function(d) { return y(d.newDeaths); })
         .attr("height", function(d) {
            return height - y(d.newDeaths);});
@@ -93,6 +93,36 @@ function generateBarChart(id,data){
             d3.select("#barSelect"+currentWeek).attr("opacity",0.15);
             transitionMap();
         });
+        
+    var g = svg.append("g");
+        
+    g.append("rect")
+        .attr("x", width+10)
+        .attr("y", 10)
+        .attr("width", 10)
+        .attr("height", 10)
+        .attr("fill","steelblue");
+
+    g.append("rect")
+        .attr("x", width+10)
+        .attr("y", 30)
+        .attr("width", 10)
+        .attr("height", 10)
+        .attr("fill","red");
+
+    g.append("text")
+        .attr("x",width+25)
+        .attr("y",18)
+        .text("New Cases")
+        .attr("font-size","10px");
+
+    g.append("text")
+        .attr("x",width+25)
+        .attr("y",38)
+        .text("Deaths")
+        .attr("font-size","10px");
+
+
 }
 
 function generateMap(){
@@ -135,10 +165,125 @@ function generateMap(){
         .attr("id",function(d){return d.properties.NAME_REF;})
         .attr("class","region");
 
+    var g = svg.append("g");    
+
+    g.selectAll("path")
+        .data(blockades_geo.features)
+        .enter()
+        .append("path")
+        .attr("d", path)
+        .attr("stroke",'brown')
+        .attr("fill","none")
+        .attr("stroke-width",2)
+        .attr("opacity",1)
+        .attr("class","blockade")
+        .attr("id",function(d){
+                    return d.properties.Border_ID;});
+    
+    var g = svg.append("g"); 
+    
+    g.selectAll("circles")
+        .data(medical_centres_geo.features)
+        .enter()
+        .append("circle")
+        .attr('cx',function(d){
+                    var point = projection([ d.geometry.coordinates[0], d.geometry.coordinates[1] ]);
+                    return point[0];
+                })
+        .attr('cy',function(d){
+                    var point = projection([ d.geometry.coordinates[0], d.geometry.coordinates[1] ]);
+                    return point[1];
+                })
+        .attr("r", 5)
+        .attr("id",function(d){
+                    return d.properties.ID;
+        })
+        .attr("class","medical_centres")
+        .attr("fill",function(d){
+            if(d.properties.Type=="Isolation"){
+                return "green";
+            }else{
+                return "blue";
+            }
+                })
+        .attr("opacity",0.7);        
+
+    var g = svg.append("g");
+        
+    g.append("rect")
+        .attr("x", 0)
+        .attr("y", 350)
+        .attr("width", 10)
+        .attr("height", 10)
+        .attr("fill","#ff9999");
+
+    g.append("text")
+        .attr("x",15)
+        .attr("y",358)
+        .text("Confirmed Deaths")
+        .attr("font-size","10px");
+
+    g.append("rect")
+        .attr("x", 0)
+        .attr("y", 374)
+        .attr("width", 10)
+        .attr("height", 2)
+        .attr("fill","brown");
+
+    g.append("text")
+        .attr("x",15)
+        .attr("y",378)
+        .text("Blockade")
+        .attr("font-size","10px");
+
+    g.append("circle")
+        .attr("cx",5)
+        .attr("cy",335)
+        .attr("r",5)
+        .attr("fill","green");
+
+    g.append("text")
+        .attr("x",15)
+        .attr("y",338)
+        .text("Referral Centre")
+        .attr("font-size","10px");
+
+    g.append("circle")
+        .attr("cx",5)
+        .attr("cy",315)
+        .attr("r",5)
+        .attr("fill","blue");
+
+    g.append("text")
+        .attr("x",15)
+        .attr("y",318)
+        .text("Treatment")
+        .attr("font-size","10px");
+
+    var mapLabels = svg.append("g");    
+
+    mapLabels.selectAll('text')
+      .data(westafrica.features)
+         .enter()
+         .append("text")
+         .attr("x", function(d,i){
+                     return path.centroid(d)[0]-20;})
+         .attr("y", function(d,i){
+                     return path.centroid(d)[1];})
+         .attr("dy", ".55em")
+         .attr("class","maplabel")
+         .style("font-size","20px")
+         .attr("opacity",0.4)
+         .text(function(d,i){
+                      return d.properties.NAME_REF;
+                  });
+
 }
 
 function transitionMap(){
     
+    
+    $('#week').html("<h4>Map for week commencing " + mapSettings[currentWeek].Date + "</h4>");
     
     var projection = d3.geo.mercator()
         .center([mapSettings[currentWeek].lng,mapSettings[currentWeek].lat])
@@ -150,6 +295,18 @@ function transitionMap(){
     d3.selectAll('.country').transition()
             .attr('d', path);
             
+    d3.selectAll('.blockade').transition()
+            .attr('d', path);
+    
+    d3.selectAll('.maplabel').transition()
+        .attr("x", function(d,i){
+                     return path.centroid(d)[0]-20;})
+        .attr("y", function(d,i){
+                     return path.centroid(d)[1];});
+         
+    d3.selectAll(".medical_centres").transition()
+
+            
     
     var data = regionDeaths[currentWeek].Deaths;
     data.forEach(function(element){
@@ -159,15 +316,51 @@ function transitionMap(){
                         .attr('d', path); 
             });
             
+    var data = blockades[currentWeek].blockades;
+    data.forEach(function(element){
+               d3.select("#"+element.blockade_id.split(' ').join('_'))
+                        .transition()
+                        .attr("opacity",convertBlockadesToOpacity(element.enforced))
+                        .attr('d', path); 
+            });
             
+    var data = medical_centres[currentWeek].medical_centres;
+    data.forEach(function(element){
+               d3.select("#"+element.id.split(' ').join('_'))
+                        .transition()
+                        .attr("opacity",convertMedicalCentresToOpacity(element.open))
+                        .attr('cx',function(d){
+                                    var point = projection([ d.geometry.coordinates[0], d.geometry.coordinates[1] ]);
+                                    return point[0];
+                                })
+                        .attr('cy',function(d){
+                                    var point = projection([ d.geometry.coordinates[0], d.geometry.coordinates[1] ]);
+                                    return point[1];
+                                });  
+            });             
 
 }
 
 function convertDeathsToOpacity(deaths){
     var opacity = deaths/90*0.7;
     if(opacity>0){opacity=opacity+0.2;}
-    console.log(opacity);
     return opacity;
+}
+
+function convertBlockadesToOpacity(enforce){
+    if(enforce=="F"){
+        return 0;
+    } else {
+        return 0.75;
+    }
+}
+
+function convertMedicalCentresToOpacity(open){
+    if(open==1){
+        return 0.75;
+    } else {
+        return 0;
+    }
 }
 
 function formatDate(date){
