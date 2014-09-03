@@ -283,7 +283,7 @@ function generateMap(){
 function transitionMap(){
     
     
-    $('#week').html("<h4>Map for week commencing " + mapSettings[currentWeek].Date + "</h4>");
+    $('#week').html("<h4>Map for week ending " + mapSettings[currentWeek].Date + "</h4>");
     
     var projection = d3.geo.mercator()
         .center([mapSettings[currentWeek].lng,mapSettings[currentWeek].lat])
