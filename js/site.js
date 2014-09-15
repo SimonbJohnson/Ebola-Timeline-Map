@@ -162,7 +162,7 @@ function generateMap(){
         .attr("stroke",'#aaaaaa')
         .attr("fill",'#ff0000')
         .attr("opacity",0)
-        .attr("id",function(d){return d.properties.NAME_REF;})
+        .attr("id",function(d){return d.properties.NAME_REF.replace(/\s/g, '');})
         .attr("class","region");
 
     var g = svg.append("g");    
@@ -285,6 +285,8 @@ function transitionMap(){
     
     $('#week').html("<h4>Map for week ending " + mapSettings[currentWeek].Date + "</h4>");
     
+    $('#weeklytext').html(mapSettings[currentWeek].text);
+    
     var projection = d3.geo.mercator()
         .center([mapSettings[currentWeek].lng,mapSettings[currentWeek].lat])
         .scale(mapSettings[currentWeek].scale);
@@ -304,13 +306,11 @@ function transitionMap(){
         .attr("y", function(d,i){
                      return path.centroid(d)[1];});
          
-    d3.selectAll(".medical_centres").transition()
-
-            
+    d3.selectAll(".medical_centres").transition();            
     
     var data = regionDeaths[currentWeek].Deaths;
     data.forEach(function(element){
-               d3.select("#"+element.Region.split(' ').join('_'))
+               d3.select("#"+element.Region.replace(/\s/g, ''))
                         .transition()
                         .attr("opacity",convertDeathsToOpacity(element.Deaths))
                         .attr('d', path); 
