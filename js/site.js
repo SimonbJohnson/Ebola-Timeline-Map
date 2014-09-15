@@ -306,9 +306,7 @@ function transitionMap(){
         .attr("y", function(d,i){
                      return path.centroid(d)[1];});
          
-    d3.selectAll(".medical_centres").transition()
-
-            
+    d3.selectAll(".medical_centres").transition();            
     
     var data = regionDeaths[currentWeek].Deaths;
     data.forEach(function(element){
