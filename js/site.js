@@ -340,7 +340,7 @@ function transitionMap(){
 }
 
 function convertDeathsToOpacity(deaths){
-    var opacity = deaths/90*0.7;
+    var opacity = deaths/200*0.7;
     if(opacity>0){opacity=opacity+0.2;}
     return opacity;
 }
