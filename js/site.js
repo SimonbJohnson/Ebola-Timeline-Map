@@ -275,7 +275,7 @@ function generateMap(){
          .style("font-size","20px")
          .attr("opacity",0.4)
          .text(function(d,i){
-                      return d.properties.NAME_REF;
+                      return d.properties.NAME;
                   });
 
 }
@@ -302,9 +302,7 @@ function transitionMap(){
         .attr("x", function(d,i){
                      return path.centroid(d)[0]-20;})
         .attr("y", function(d,i){
-                     return path.centroid(d)[1];});
-         
-    //d3.selectAll(".medical_centres").transition();            
+                     return path.centroid(d)[1];});           
     
     var data = regionDeaths[currentWeek].Deaths;
     data.forEach(function(element){
