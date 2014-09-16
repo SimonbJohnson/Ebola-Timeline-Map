@@ -285,8 +285,6 @@ function transitionMap(){
     
     $('#week').html("<h4>Map for week ending " + mapSettings[currentWeek].Date + "</h4>");
     
-    $('#weeklytext').html(mapSettings[currentWeek].text);
-    
     var projection = d3.geo.mercator()
         .center([mapSettings[currentWeek].lng,mapSettings[currentWeek].lat])
         .scale(mapSettings[currentWeek].scale);
