@@ -220,7 +220,7 @@ function generateMap(){
     g.append("text")
         .attr("x",15)
         .attr("y",358)
-        .text("Confirmed Deaths")
+        .text("Confirmed Cases")
         .attr("font-size","10px");
 
     g.append("rect")
@@ -304,7 +304,7 @@ function transitionMap(){
         .attr("y", function(d,i){
                      return path.centroid(d)[1];});
          
-    d3.selectAll(".medical_centres").transition();            
+    //d3.selectAll(".medical_centres").transition();            
     
     var data = regionDeaths[currentWeek].Deaths;
     data.forEach(function(element){
@@ -340,7 +340,7 @@ function transitionMap(){
 }
 
 function convertDeathsToOpacity(deaths){
-    var opacity = deaths/90*0.7;
+    var opacity = deaths/200*0.7;
     if(opacity>0){opacity=opacity+0.2;}
     return opacity;
 }
