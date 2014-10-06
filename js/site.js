@@ -141,6 +141,20 @@ function generateMap(){
     var path = d3.geo.path()
         .projection(projection);
 
+    var g = svg.append("g");    
+
+    g.selectAll("path")
+        .data(regions.features)
+        .enter()
+        .append("path")
+        .attr("d", path)
+        .attr("stroke",'#cccccc')
+        .attr("fill",'#ffffff')
+        .attr("opacity",1)
+        .attr("id",function(d){return d.properties.PCODE_REF;})
+        .attr("class","region");
+
+
     var g = svg.append("g");
     
     g.selectAll("path")
@@ -149,36 +163,8 @@ function generateMap(){
         .append("path")
         .attr("d", path)
         .attr("stroke",'#aaaaaa')
-        .attr("fill",'#ffffff')
-        .attr("class","country");
-
-    var g = svg.append("g");    
-
-    g.selectAll("path")
-        .data(regions.features)
-        .enter()
-        .append("path")
-        .attr("d", path)
-        .attr("stroke",'#aaaaaa')
-        .attr("fill",'#ff0000')
-        .attr("opacity",0)
-        .attr("id",function(d){return d.properties.NAME_REF.replace(/\s/g, '');})
-        .attr("class","region");
-
-    var g = svg.append("g");    
-
-    g.selectAll("path")
-        .data(blockades_geo.features)
-        .enter()
-        .append("path")
-        .attr("d", path)
-        .attr("stroke",'brown')
-        .attr("fill","none")
-        .attr("stroke-width",2)
-        .attr("opacity",1)
-        .attr("class","blockade")
-        .attr("id",function(d){
-                    return d.properties.Border_ID;});
+        .attr("fill",'none')
+        .attr("class","country");    
     
     var g = svg.append("g"); 
     
@@ -200,7 +186,7 @@ function generateMap(){
         })
         .attr("class","medical_centres")
         .attr("fill",function(d){
-            if(d.properties.Type=="Isolation"){
+            if(d.properties.Type1=="Transit Centre" || d.properties.Type1=="Holding Centre" ){
                 return "green";
             }else{
                 return "blue";
@@ -209,54 +195,108 @@ function generateMap(){
         .attr("opacity",0.7);        
 
     var g = svg.append("g");
-        
+    
     g.append("rect")
         .attr("x", 0)
-        .attr("y", 350)
+        .attr("y", 220)
         .attr("width", 10)
         .attr("height", 10)
-        .attr("fill","#ff9999");
+        .attr("fill","#ffffff")
+        .attr("stroke","#000000")
+        .attr("stroke-width",1);
 
     g.append("text")
         .attr("x",15)
-        .attr("y",358)
-        .text("Confirmed Cases")
+        .attr("y",228)
+        .text("No cases")
+        .attr("font-size","10px");    
+        
+    g.append("rect")
+        .attr("x", 0)
+        .attr("y", 240)
+        .attr("width", 10)
+        .attr("height", 10)
+        .attr("fill","#ffecb3");
+
+    g.append("text")
+        .attr("x",15)
+        .attr("y",248)
+        .text("1 to 5 cases in the last 4 weeks")
         .attr("font-size","10px");
 
     g.append("rect")
         .attr("x", 0)
-        .attr("y", 374)
+        .attr("y", 260)
         .attr("width", 10)
-        .attr("height", 2)
-        .attr("fill","brown");
+        .attr("height", 10)
+        .attr("fill","#ffd54f");
 
     g.append("text")
         .attr("x",15)
-        .attr("y",378)
-        .text("Blockade")
+        .attr("y",268)
+        .text("5 to 49 cases in the last 4 weeks")
+        .attr("font-size","10px");
+
+    g.append("rect")
+        .attr("x", 0)
+        .attr("y", 280)
+        .attr("width", 10)
+        .attr("height", 10)
+        .attr("fill","#ffc107");
+
+    g.append("text")
+        .attr("x",15)
+        .attr("y",288)
+        .text("50 to 99 cases in the last 4 weeks")
+        .attr("font-size","10px");
+
+    g.append("rect")
+        .attr("x", 0)
+        .attr("y", 300)
+        .attr("width", 10)
+        .attr("height", 10)
+        .attr("fill","#ffa000");
+
+    g.append("text")
+        .attr("x",15)
+        .attr("y",308)
+        .text("100 to 499 cases in the last 4 weeks")
+        .attr("font-size","10px");
+
+    g.append("rect")
+        .attr("x", 0)
+        .attr("y", 320)
+        .attr("width", 10)
+        .attr("height", 10)
+        .attr("fill","#ff6f00");
+
+    g.append("text")
+        .attr("x",15)
+        .attr("y",328)
+        .text("More than 500 cases in the last 4 weeks")
         .attr("font-size","10px");
 
     g.append("circle")
         .attr("cx",5)
-        .attr("cy",335)
+        .attr("cy",365)
         .attr("r",5)
         .attr("fill","green");
 
     g.append("text")
         .attr("x",15)
-        .attr("y",338)
+        .attr("y",368)
         .text("Referral Centre")
         .attr("font-size","10px");
 
     g.append("circle")
         .attr("cx",5)
-        .attr("cy",315)
+        .attr("cy",345)
         .attr("r",5)
         .attr("fill","blue");
 
     g.append("text")
         .attr("x",15)
-        .attr("y",318)
+        .attr("y",348)
         .text("Treatment")
         .attr("font-size","10px");
 
@@ -283,7 +323,7 @@ function generateMap(){
 function transitionMap(){
     
     
-    $('#week').html("<h4>Map for week ending " + mapSettings[currentWeek].Date + "</h4>");
+    $('#week').html("<h4>A map of cases in the previous 4 weeks up to the week ending " + mapSettings[currentWeek].Date + "</h4>");
     
     var projection = d3.geo.mercator()
         .center([mapSettings[currentWeek].lng,mapSettings[currentWeek].lat])
@@ -292,38 +332,29 @@ function transitionMap(){
     var path = d3.geo.path()
         .projection(projection);
 
-    d3.selectAll('.country').transition()
+    d3.selectAll('.country')
             .attr('d', path);
             
-    d3.selectAll('.blockade').transition()
+    d3.selectAll('.blockade')
             .attr('d', path);
     
-    d3.selectAll('.maplabel').transition()
+    d3.selectAll('.maplabel')
         .attr("x", function(d,i){
                      return path.centroid(d)[0]-20;})
         .attr("y", function(d,i){
-                     return path.centroid(d)[1];});           
+                     return path.centroid(d)[1];});  
+         
+    d3.selectAll('.region').attr('d', path);
     
-    var data = regionDeaths[currentWeek].Deaths;
+    var data = regionCases[currentWeek].Cases;
     data.forEach(function(element){
-               d3.select("#"+element.Region.replace(/\s/g, ''))
-                        .transition()
-                        .attr("opacity",convertDeathsToOpacity(element.Deaths))
-                        .attr('d', path); 
-            });
-            
-    var data = blockades[currentWeek].blockades;
-    data.forEach(function(element){
-               d3.select("#"+element.blockade_id.split(' ').join('_'))
-                        .transition()
-                        .attr("opacity",convertBlockadesToOpacity(element.enforced))
-                        .attr('d', path); 
+            d3.select("#"+element.Region.replace(/\s/g, ''))
+                        .attr("fill",convertCasesToColor(element.Cases))
             });
             
     var data = medical_centres[currentWeek].medical_centres;
     data.forEach(function(element){
                d3.select("#"+element.id.split(' ').join('_'))
-                        .transition()
                         .attr("opacity",convertMedicalCentresToOpacity(element.open))
                         .attr('cx',function(d){
                                     var point = projection([ d.geometry.coordinates[0], d.geometry.coordinates[1] ]);
@@ -337,18 +368,34 @@ function transitionMap(){
 
 }
 
-function convertDeathsToOpacity(deaths){
-    var opacity = deaths/200*0.7;
-    if(opacity>0){opacity=opacity+0.2;}
-    return opacity;
-}
-
-function convertBlockadesToOpacity(enforce){
-    if(enforce=="F"){
-        return 0;
+function convertCasesToColor(cases){
+    var colors = [
+        "#ffffff",
+        "#fff8e1",
+        "#ffecb3",
+        "#ffe082",
+        "#ffd54f",
+        "#ffca28",
+        "#ffc107",
+        "#ffb300",
+        "#ffa000",
+        "#ff8f00",
+        "#ff6f00"
+    ];
+    if(cases==0){
+        c=0;
+    } else if(cases<5){
+        c=2;
+    } else if(cases<50){
+        c=4;
+    } else if(cases<100){
+        c=6;
+    } else if(cases<500){
+        c=8;
     } else {
-        return 0.75;
-    }
+        c=10;
+    };
+    return colors[c];
 }
 
 function convertMedicalCentresToOpacity(open){
