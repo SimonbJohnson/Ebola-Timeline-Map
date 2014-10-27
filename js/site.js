@@ -40,8 +40,9 @@ function generateBarChart(id,data){
     
     var max = d3.max(data, function(d) { return d.newCases; });
     
-    x.domain(data.map(function(d) { return formatDate(d.Date); }));
+    x.domain(data.map(function(d) {return formatDate(d.Date); }));
     y.domain([0, max]);
+    xAxis.tickValues(["31 Mar","14 Apr", "28 Apr", "12 May","26 May","09 Jun","23 Jun","07 Jul","21 Jul","04 Aug","18 Aug","01 Sep","15 Sep","29 Sep","13 Oct"]);
     
     svg.append("g")
         .attr("class", "x axis")
@@ -408,7 +409,7 @@ function convertMedicalCentresToOpacity(open){
 
 function formatDate(date){
     var month=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
-    return date.substring(0,2) + " " + month[parseInt((date.substring(4,5))-1)];
+    return date.substring(0,2) + " " + month[parseInt((date.substring(3,5))-1)];
 }
 
 var currentWeek=0;
