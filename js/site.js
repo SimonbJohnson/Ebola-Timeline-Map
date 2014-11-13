@@ -132,7 +132,7 @@ function generateMap(){
     height = 425;
    
     var projection = d3.geo.mercator()
-        .center([-5,7.7])
+        .center([124.5,12])
         .scale(1500);
 
     var svg = d3.select('#map').append("svg")
@@ -152,7 +152,9 @@ function generateMap(){
         .attr("stroke",'#cccccc')
         .attr("fill",'#ffffff')
         .attr("opacity",1)
-        .attr("id",function(d){return d.properties.PCODE_REF;})
+        .attr("id",function(d){
+            return d.properties.PCODE_REF;
+        })
         .attr("class","region");
 
 
@@ -350,7 +352,7 @@ function transitionMap(){
     var data = regionCases[currentWeek].Cases;
     data.forEach(function(element){
             d3.select("#"+element.Region.replace(/\s/g, ''))
-                        .attr("fill",convertCasesToColor(element.Cases))
+                        .attr("fill",convertCasesToColor(element.Cases));
             });
             
     var data = medical_centres[currentWeek].medical_centres;
