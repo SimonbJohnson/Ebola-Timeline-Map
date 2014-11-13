@@ -42,7 +42,7 @@ function generateBarChart(id,data){
     
     x.domain(data.map(function(d) {return formatDate(d.Date); }));
     y.domain([0, max]);
-    xAxis.tickValues(["31 Mar","14 Apr", "28 Apr", "12 May","26 May","09 Jun","23 Jun","07 Jul","21 Jul","04 Aug","18 Aug","01 Sep","15 Sep","29 Sep","13 Oct"]);
+    xAxis.tickValues(["31 Mar","14 Apr", "28 Apr", "12 May","26 May","09 Jun","23 Jun","07 Jul","21 Jul","04 Aug","18 Aug","01 Sep","15 Sep","29 Sep","13 Oct","27 Oct","10 Nov"]);
     
     svg.append("g")
         .attr("class", "x axis")
