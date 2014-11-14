@@ -48,3 +48,19 @@ rect {
 .maplabel{
     fill: #666666;
 }
+.playPause{
+  cursor: pointer;
+  display: inline-block;
+  height: 18px;
+  width: 18px;
+  margin-bottom: -4px;
+  background:url(../playPauseSprite.png) 18px 18px no-repeat;
+}
+
+.playPause.paused{
+  background-position:0px 0px;
+}
+
+.playPause.playing{
+  background-position:-18px 0px;
+}
