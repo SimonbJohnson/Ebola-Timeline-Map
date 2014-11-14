@@ -414,6 +414,8 @@ function formatDate(date){
     return date.substring(0,2) + " " + month[parseInt((date.substring(3,5))-1)];
 }
 
+
+
 var currentWeek=0;
 generateBarChart('#bar_chart',totalCasesAndDeaths);
 d3.select("#barSelect"+currentWeek).attr("opacity",0.15);
@@ -443,4 +445,34 @@ $(document).keydown(function(e) {
         default: return; // exit this handler for other keys
     }
     e.preventDefault(); // prevent the default action (scroll / move caret)
+});
+
+
+function autoAdvance(){
+    d3.select("#barSelect"+currentWeek).attr("opacity",0);
+    currentWeek=currentWeek+1;  
+    if(currentWeek>totalCasesAndDeaths.length-1){
+        currentWeek=0;
+     }
+    d3.select("#barSelect"+currentWeek).attr("opacity",0.15); 
+    transitionMap();
+}
+
+var playTimer;
+
+$(".playPause").click(function(){  
+    if($(".playPause").hasClass("paused")){
+        playTimer = setInterval(function(){autoAdvance()}, 1000);
+        $(".playPause").removeClass("paused");
+        $(".playPause").addClass("playing");
+    } else {
+    clearInterval(playTimer);
+        $(".playPause").removeClass("playing");
+        $(".playPause").addClass("paused");
+    }
+})
+
+// initiate autoplay on page load
+$( document ).ready(function(){
+    $(".playPause").trigger("click");
 });
