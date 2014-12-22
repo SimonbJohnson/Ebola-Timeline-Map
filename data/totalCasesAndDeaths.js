@@ -30,4 +30,9 @@ var totalCasesAndDeaths = [{"Date":"31/03/2014","newCases":46,"newDeaths":25},
 {"Date":"20/10/2014","newCases":1186,"newDeaths":350},
 {"Date":"27/10/2014","newCases":1936,"newDeaths":150},
 {"Date":"03/11/2014","newCases":849,"newDeaths":176},
-{"Date":"10/11/2014","newCases":1135,"newDeaths":283}];
+{"Date":"10/11/2014","newCases":1119,"newDeaths":251},
+{"Date":"17/11/2014","newCases":990,"newDeaths":267},
+{"Date":"24/11/2014","newCases":901,"newDeaths":303},
+{"Date":"01/12/2014","newCases":1130,"newDeaths":397},
+{"Date":"08/12/2014","newCases":805,"newDeaths":404},
+{"Date":"15/12/2014","newCases":626,"newDeaths":504}];

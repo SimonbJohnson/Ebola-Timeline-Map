@@ -170,7 +170,7 @@ function generateMap(){
         .attr("class","country");    
     
     var g = svg.append("g"); 
-    
+    /*
     g.selectAll("circles")
         .data(medical_centres_geo.features)
         .enter()
@@ -196,7 +196,7 @@ function generateMap(){
             }
                 })
         .attr("opacity",0.7);        
-
+    */
     var g = svg.append("g");
     
     g.append("rect")
@@ -278,7 +278,7 @@ function generateMap(){
         .attr("y",328)
         .text("More than 500 cases in the last 4 weeks")
         .attr("font-size","10px");
-
+    /*
     g.append("circle")
         .attr("cx",5)
         .attr("cy",365)
@@ -302,7 +302,7 @@ function generateMap(){
         .attr("y",348)
         .text("Treatment")
         .attr("font-size","10px");
-
+    */
     var mapLabels = svg.append("g");    
 
     mapLabels.selectAll('text')
@@ -337,9 +337,6 @@ function transitionMap(){
 
     d3.selectAll('.country')
             .attr('d', path);
-            
-    d3.selectAll('.blockade')
-            .attr('d', path);
     
     d3.selectAll('.maplabel')
         .attr("x", function(d,i){
@@ -354,7 +351,7 @@ function transitionMap(){
             d3.select("#"+element.Region.replace(/\s/g, ''))
                         .attr("fill",convertCasesToColor(element.Cases));
             });
-            
+    /*        
     var data = medical_centres[currentWeek].medical_centres;
     data.forEach(function(element){
                d3.select("#"+element.id.split(' ').join('_'))
@@ -368,7 +365,7 @@ function transitionMap(){
                                     return point[1];
                                 });  
             });             
-
+    */
 }
 
 function convertCasesToColor(cases){
