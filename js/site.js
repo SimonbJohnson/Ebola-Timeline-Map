@@ -42,7 +42,7 @@ function generateBarChart(id,data){
     
     x.domain(data.map(function(d) {return formatDate(d.Date); }));
     y.domain([0, max]);
-    xAxis.tickValues(["31 Mar","14 Apr", "28 Apr", "12 May","26 May","09 Jun","23 Jun","07 Jul","21 Jul","04 Aug","18 Aug","01 Sep","15 Sep","29 Sep","13 Oct","27 Oct","10 Nov"]);
+    xAxis.tickValues(["31 Mar","14 Apr", "28 Apr", "12 May","26 May","09 Jun","23 Jun","07 Jul","21 Jul","04 Aug","18 Aug","01 Sep","15 Sep","29 Sep","13 Oct","27 Oct","10 Nov","24 Nov","08 Dec"]);
     
     svg.append("g")
         .attr("class", "x axis")
@@ -170,7 +170,7 @@ function generateMap(){
         .attr("class","country");    
     
     var g = svg.append("g"); 
-    
+    /*
     g.selectAll("circles")
         .data(medical_centres_geo.features)
         .enter()
@@ -196,7 +196,7 @@ function generateMap(){
             }
                 })
         .attr("opacity",0.7);        
-
+    */
     var g = svg.append("g");
     
     g.append("rect")
@@ -219,12 +219,12 @@ function generateMap(){
         .attr("y", 240)
         .attr("width", 10)
         .attr("height", 10)
-        .attr("fill","#ffecb3");
+        .attr("fill","#ffe082");
 
     g.append("text")
         .attr("x",15)
         .attr("y",248)
-        .text("1 to 5 cases in the last 4 weeks")
+        .text("1 to 9 cases in the last 4 weeks")
         .attr("font-size","10px");
 
     g.append("rect")
@@ -232,12 +232,12 @@ function generateMap(){
         .attr("y", 260)
         .attr("width", 10)
         .attr("height", 10)
-        .attr("fill","#ffd54f");
+        .attr("fill","#ffbd13");
 
     g.append("text")
         .attr("x",15)
         .attr("y",268)
-        .text("5 to 49 cases in the last 4 weeks")
+        .text("10 to 99 cases in the last 4 weeks")
         .attr("font-size","10px");
 
     g.append("rect")
@@ -245,12 +245,12 @@ function generateMap(){
         .attr("y", 280)
         .attr("width", 10)
         .attr("height", 10)
-        .attr("fill","#ffc107");
+        .attr("fill","#ff8053");
 
     g.append("text")
         .attr("x",15)
         .attr("y",288)
-        .text("50 to 99 cases in the last 4 weeks")
+        .text("100 to 199 cases in the last 4 weeks")
         .attr("font-size","10px");
 
     g.append("rect")
@@ -258,27 +258,14 @@ function generateMap(){
         .attr("y", 300)
         .attr("width", 10)
         .attr("height", 10)
-        .attr("fill","#ffa000");
+        .attr("fill","#ff493d");
 
     g.append("text")
         .attr("x",15)
         .attr("y",308)
-        .text("100 to 499 cases in the last 4 weeks")
+        .text("200 or more cases in the last 4 weeks")
         .attr("font-size","10px");
-
-    g.append("rect")
-        .attr("x", 0)
-        .attr("y", 320)
-        .attr("width", 10)
-        .attr("height", 10)
-        .attr("fill","#ff6f00");
-
-    g.append("text")
-        .attr("x",15)
-        .attr("y",328)
-        .text("More than 500 cases in the last 4 weeks")
-        .attr("font-size","10px");
-
+    /*
     g.append("circle")
         .attr("cx",5)
         .attr("cy",365)
@@ -302,7 +289,7 @@ function generateMap(){
         .attr("y",348)
         .text("Treatment")
         .attr("font-size","10px");
-
+    */
     var mapLabels = svg.append("g");    
 
     mapLabels.selectAll('text')
@@ -337,9 +324,6 @@ function transitionMap(){
 
     d3.selectAll('.country')
             .attr('d', path);
-            
-    d3.selectAll('.blockade')
-            .attr('d', path);
     
     d3.selectAll('.maplabel')
         .attr("x", function(d,i){
@@ -354,7 +338,7 @@ function transitionMap(){
             d3.select("#"+element.Region.replace(/\s/g, ''))
                         .attr("fill",convertCasesToColor(element.Cases));
             });
-            
+    /*        
     var data = medical_centres[currentWeek].medical_centres;
     data.forEach(function(element){
                d3.select("#"+element.id.split(' ').join('_'))
@@ -368,35 +352,23 @@ function transitionMap(){
                                     return point[1];
                                 });  
             });             
-
+    */
 }
 
 function convertCasesToColor(cases){
-    var colors = [
-        "#ffffff",
-        "#fff8e1",
-        "#ffecb3",
-        "#ffe082",
-        "#ffd54f",
-        "#ffca28",
-        "#ffc107",
-        "#ffb300",
-        "#ffa000",
-        "#ff8f00",
-        "#ff6f00"
-    ];
+    
+    var colors = ["#ffffff","#ffe082","#ffbd13","#ff8053","#ff493d"];
+
     if(cases==0){
         c=0;
-    } else if(cases<5){
-        c=2;
-    } else if(cases<50){
-        c=4;
+    } else if(cases<10){
+        c=1;
     } else if(cases<100){
-        c=6;
-    } else if(cases<500){
-        c=8;
+        c=2;
+    } else if(cases<200){
+        c=3;
     } else {
-        c=10;
+        c=4;
     };
     return colors[c];
 }
