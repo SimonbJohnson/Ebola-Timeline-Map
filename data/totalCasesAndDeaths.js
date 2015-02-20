@@ -39,4 +39,9 @@ var totalCasesAndDeaths = [{"Date":"31/03/2014","newCases":46,"newDeaths":25},
 {"Date":"22/12/2014","newCases":871,"newDeaths":298},
 {"Date":"29/12/2014","newCases":662,"newDeaths":310},
 {"Date":"05/01/2015","newCases":552,"newDeaths":317},
-{"Date":"12/01/2015","newCases":535,"newDeaths":185}];
+{"Date":"12/01/2015","newCases":520,"newDeaths":189},
+{"Date":"19/01/2015","newCases":420,"newDeaths":206},
+{"Date":"26/01/2015","newCases":373,"newDeaths":169},
+{"Date":"02/02/2015","newCases":406,"newDeaths":178},
+{"Date":"09/02/2015","newCases":382,"newDeaths":197},
+{"Date":"16/02/2015","newCases":368,"newDeaths":200}];
